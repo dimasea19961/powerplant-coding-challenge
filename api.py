@@ -1,7 +1,9 @@
 from fastapi import FastAPI
+from classes import *
 
 app = FastAPI()
 
-@app.get("/productionplan")
-def productionplan():
-    return {"Message": "Hello World!"}
+@app.post("/productionplan")
+def productionplan(payload: Payload):
+    problem = UCproblem(payload)
+    return {"Given_payload": payload}
