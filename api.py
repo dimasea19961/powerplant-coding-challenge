@@ -5,8 +5,8 @@ app = FastAPI()
 
 @app.post("/productionplan")
 def productionplan(payload: Payload):
-    problem = UCproblem(payload)
-    if problem.compute_UC():
-        return problem.get_solution()
+    problem_instance = UCproblem(payload)
+    if problem_instance.compute_UC():
+        return problem_instance.get_solution()
     else :
         return []
