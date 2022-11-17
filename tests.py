@@ -80,5 +80,74 @@ class TestClasses(unittest.TestCase):
             powerplants_names,
             ['windpark2', 'windpark1', 'gasfiredbig2', 'gasfiredbig1', 'gasfiredsomewhatsmaller', 'tj1'])
 
+    def test_get_p_min(self):
+        self.assertEqual(
+            self.prblm_inst.get_p_min(self.prblm_inst.powerplants[4]),
+            90
+        )
+        self.assertEqual(
+            self.prblm_inst.get_p_min(self.prblm_inst.powerplants[0]),
+            100
+        )
+        self.assertEqual(
+            self.prblm_inst.get_p_min(self.prblm_inst.powerplants[3]),
+            0
+        )
+    def test_get_p_max(self):
+        self.assertEqual(
+            self.prblm_inst.get_p_max(self.prblm_inst.powerplants[4]),
+            90
+        )
+        self.assertEqual(
+            self.prblm_inst.get_p_max(self.prblm_inst.powerplants[0]),
+            460
+        )
+        self.assertEqual(
+            self.prblm_inst.get_p_max(self.prblm_inst.powerplants[3]),
+            16
+        )
+    
+    def test_decrease_total_load(self):
+        self.prblm_inst.load = 590
+        self.prblm_inst.solution = [21.6, 90, 460, 100, 0, 0]
+        self.prblm_inst.current_load = sum(self.prblm_inst.solution)
+        self.prblm_inst.decrease_total_load(2)
+        self.assertEqual(
+            self.prblm_inst.solution,
+            [21.6, 90, 378.4, 100, 0, 0]
+        )
+    
+    def test_compute_UC(self):
+        self.prblm_inst.compute_UC()
+        self.assertEqual(
+            self.prblm_inst.get_solution(),
+            [
+            {
+                "name": "windpark2",
+                "p": 21.6
+            },
+            {
+                "name": "windpark1",
+                "p": 90
+            },
+            {
+                "name": "gasfiredbig2",
+                "p": 368.4
+            },
+            {
+                "name": "gasfiredbig1",
+                "p": 0
+            },
+            {
+                "name": "gasfiredsomewhatsmaller",
+                "p": 0
+            },
+            {
+                "name": "tj1",
+                "p": 0
+            }
+            ]
+        )
+
 if __name__ == '__main__':
     unittest.main()

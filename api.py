@@ -6,5 +6,7 @@ app = FastAPI()
 @app.post("/productionplan")
 def productionplan(payload: Payload):
     problem = UCproblem(payload)
-    problem.compute_merit_order()
-    return {"Given_payload": payload}
+    if problem.compute_UC():
+        return problem.get_solution()
+    else :
+        return []
